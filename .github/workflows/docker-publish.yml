@@ -2,17 +2,20 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ['v*.*.*']
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Manual supplied image tag like v0.1.0'
+        required: true
+        type: string
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
   build:
@@ -61,6 +64,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           platforms: linux/amd64,linux/arm64
-
-
-
